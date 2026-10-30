@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: theme("colors.ink.900");
+  color: theme("colors.parchment.200");
+  font-family: theme("fontFamily.body");
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle starfield / vellum texture on the app background */
+#root {
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.05), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(255, 255, 255, 0.04), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(255, 255, 255, 0.03), transparent);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: theme("fontFamily.display");
+    letter-spacing: 0.01em;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-xl border border-ink-500/70 bg-ink-700/80 shadow-panel backdrop-blur-sm;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-arcane text-white hover:bg-arcane-deep;
+  }
+  .btn-ghost {
+    @apply btn text-parchment-200 hover:bg-ink-500/60;
+  }
+  .btn-ember {
+    @apply btn bg-ember text-white hover:bg-ember-deep;
+  }
+  .input {
+    @apply w-full rounded-lg border border-ink-500 bg-ink-800 px-3 py-2 text-sm text-parchment-100 outline-none transition focus:border-arcane/70 focus:ring-2 focus:ring-arcane/20 placeholder:text-parchment-300/40;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-ink-400 bg-ink-600/60 px-2.5 py-0.5 text-xs text-parchment-300;
+  }
+}
+
+/* Prose (markdown) styling */
+.prose-lore {
+  @apply text-parchment-200/90 leading-relaxed;
+}
+.prose-lore h1,
+.prose-lore h2,
+.prose-lore h3 {
+  @apply text-parchment-100 mt-6 mb-2;
+}
+.prose-lore h1 {
+  @apply text-2xl;
+}
+.prose-lore h2 {
+  @apply text-xl;
+}
+.prose-lore p {
+  @apply my-3;
+}
+.prose-lore a {
+  @apply text-arcane-soft underline underline-offset-2 hover:text-arcane;
+}
+.prose-lore ul {
+  @apply my-3 list-disc pl-6;
+}
+.prose-lore ol {
+  @apply my-3 list-decimal pl-6;
+}
+.prose-lore blockquote {
+  @apply my-3 border-l-2 border-ember/60 pl-4 italic text-parchment-300;
+}
+.prose-lore code {
+  @apply rounded bg-ink-800 px-1.5 py-0.5 font-mono text-[0.85em] text-ember-soft;
+}
+.prose-lore hr {
+  @apply my-6 border-ink-500;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: theme("colors.ink.500");
+  border-radius: 6px;
+  border: 2px solid theme("colors.ink.900");
+}
+::-webkit-scrollbar-thumb:hover {
+  background: theme("colors.ink.400");
+}
