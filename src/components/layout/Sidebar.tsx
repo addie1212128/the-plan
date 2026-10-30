@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Globe2, BookMarked, Settings, PanelLeftClose, PanelLeft } from "lucide-react";
+import { LayoutDashboard, Globe2, BookMarked, Waypoints, Settings, PanelLeftClose, PanelLeft } from "lucide-react";
 import clsx from "clsx";
 import { MODULES } from "@/config/modules";
 import { useUI } from "@/lib/store";
@@ -34,6 +34,7 @@ export function Sidebar() {
       <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-2">
         <NavItem to="/" icon={<LayoutDashboard className="h-4 w-4" />} label="Dashboard" collapsed={collapsed} />
         <NavItem to="/world" icon={<Globe2 className="h-4 w-4" />} label="World Map" collapsed={collapsed} />
+        <NavItem to="/graph" icon={<Waypoints className="h-4 w-4" />} label="Relationships" collapsed={collapsed} />
         <NavItem to="/atlas" icon={<BookMarked className="h-4 w-4 text-ember" />} label="Build Atlas" collapsed={collapsed} />
 
         {!collapsed && (
