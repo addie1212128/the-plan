@@ -15,7 +15,9 @@ interactive 3D world + Obsidian vault sync). See `README.md` for the full tour.
 - **Everything is an `Entity`** (`src/lib/types.ts`). New "modules" are added by
   appending to `MODULES` in `src/config/modules.ts` — the list/detail pages,
   nav, dashboard, and search all derive from it. Avoid bespoke per-kind pages
-  unless a kind genuinely needs a different UI.
+  unless a kind genuinely needs a different UI. (The `event` module is the one
+  exception: it renders a chronological Timeline at `/timeline`
+  — `src/pages/TimelinePage.tsx` — and nav routes to it via `modulePath()`.)
 - **Obsidian compatibility is a feature, keep it.** Entities round-trip through
   `src/lib/frontmatter.ts` (YAML frontmatter + markdown body, `[[wikilinks]]`).
   If you add fields to `Entity`, make them serialize sensibly there.

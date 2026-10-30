@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Plus, Globe2, ArrowRight, BookMarked } from "lucide-react";
-import { MODULES, moduleFor } from "@/config/modules";
+import { MODULES, moduleFor, modulePath } from "@/config/modules";
 import { useAllEntities, useEntityCounts } from "@/hooks/useEntities";
 import { useAssetMap } from "@/lib/images";
 import { EntityImage } from "@/components/EntityImage";
@@ -82,7 +82,7 @@ export function Dashboard() {
                 {MODULES.map((m) => (
                   <Link
                     key={m.kind}
-                    to={`/m/${m.slug}`}
+                    to={modulePath(m)}
                     className="panel group flex items-center gap-3 p-4 transition hover:border-arcane/50"
                   >
                     <div
