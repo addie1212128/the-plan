@@ -113,7 +113,9 @@ The **Obsidian vault** is kept in step via explicit import/export in Settings
 In **Settings → Obsidian vault**, "Connect a vault folder" uses the browser's
 File System Access API to let you grant access to a folder on disk — point it at
 an Obsidian vault. Each top-level folder maps to an entity kind
-(`Characters/`, `Locations/`, …).
+(`Characters/`, `Locations/`, …). Portraits travel too: export writes each one
+to an `Images/` folder and links it from the note's `image:` frontmatter, and
+import reads that path back in.
 
 Folder access requires a Chromium browser (Chrome, Edge, Brave, Arc). In other
 browsers, the JSON backup/restore in Settings works everywhere.
@@ -121,7 +123,7 @@ browsers, the JSON backup/restore in Settings works everywhere.
 ## Roadmap ideas
 
 - Live two-way vault sync (file watching) instead of manual import/export
-- Relationship graph view; richer timeline
-- Heightmap / uploaded-image terrain for the Atlas mode
-- Lazy-load the 3D world bundle to shrink first paint
+- Multiple images per entry (a gallery)
+- 3D heightmap terrain for the Atlas mode
+- Theming / light mode and a first-run tour
 - Optional cloud sync (the storage layer is already adapter-based)

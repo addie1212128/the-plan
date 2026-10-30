@@ -25,10 +25,16 @@ function readDimensions(file: Blob): Promise<{ width: number; height: number }> 
   });
 }
 
+/** Store an image blob for an entity (reads its dimensions). Does not touch the
+ *  entity record — used by vault import, which already set `image` from frontmatter. */
+export async function putImageBlob(entityId: string, blob: Blob, name: string): Promise<void> {
+  const { width, height } = await readDimensions(blob);
+  await db.assets.put({ entityId, blob, name, width, height, type: blob.type || "image/png" });
+}
+
 export async function setEntityImage(entityId: string, file: File): Promise<void> {
   if (!file.type.startsWith("image/")) throw new Error("Please choose an image file.");
-  const { width, height } = await readDimensions(file);
-  await db.assets.put({ entityId, blob: file, name: file.name, width, height, type: file.type });
+  await putImageBlob(entityId, file, file.name);
   await updateEntity(entityId, { image: file.name });
 }
 

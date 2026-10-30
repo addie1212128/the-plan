@@ -53,7 +53,10 @@ Strict TypeScript is on (incl. noUnusedLocals/Parameters) — keep it clean.
   (`LoreMarkdown`) are code-split with `React.lazy` + `<Suspense>` in `App.tsx`.
   Initial bundle is ~400 kB; the 3D chunk (~880 kB) loads only on `/world`. Keep
   new heavy deps behind a lazy route.
-- Vault sync is manual import/export; live file watching is a planned follow-up.
+- Vault sync is manual import/export (`src/lib/sync.ts`): markdown round-trips,
+  and portraits are written to an `Images/` folder and linked via each note's
+  frontmatter `image:` path (read back on import). Live file watching is a
+  planned follow-up.
 - Atlas mode can drape a user-uploaded map image over the plane
   (`src/lib/atlasMap.ts`, stored in the Dexie `meta` table); 3D heightmap
   terrain is still a future idea.

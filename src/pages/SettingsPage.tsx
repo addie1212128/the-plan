@@ -153,8 +153,9 @@ export function SettingsPage() {
                 </button>
               </div>
               <p className="text-xs text-parchment-300/50">
-                Import pulls your existing notes in; export writes your current entries out as markdown. Live
-                two-way syncing is on the roadmap.
+                Import pulls your existing notes in; export writes your entries out as markdown, with portraits
+                saved to an <span className="font-mono">Images/</span> folder and linked from each note's
+                frontmatter. Live two-way syncing is on the roadmap.
               </p>
             </div>
           ) : (
