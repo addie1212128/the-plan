@@ -19,6 +19,10 @@ interactive 3D world + Obsidian vault sync). See `README.md` for the full tour.
 - **Obsidian compatibility is a feature, keep it.** Entities round-trip through
   `src/lib/frontmatter.ts` (YAML frontmatter + markdown body, `[[wikilinks]]`).
   If you add fields to `Entity`, make them serialize sensibly there.
+- **Portrait images** live in the Dexie `assets` table (one Blob per entity,
+  keyed by entity id — `src/lib/images.ts`), not on the `Entity` (which only
+  keeps the filename in `image`). JSON backup/restore and `clearAll`/
+  `deleteEntity` all handle assets too — keep that parity if you touch them.
 
 ## Conventions
 

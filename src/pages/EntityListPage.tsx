@@ -2,6 +2,8 @@ import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { Plus, MapPin } from "lucide-react";
 import { moduleForSlug } from "@/config/modules";
 import { useEntitiesByKind } from "@/hooks/useEntities";
+import { useAssetMap } from "@/lib/images";
+import { EntityImage } from "@/components/EntityImage";
 import { PageHeader, EmptyState } from "@/components/ui";
 import { createBlankEntity } from "@/lib/data";
 
@@ -10,6 +12,7 @@ export function EntityListPage() {
   const navigate = useNavigate();
   const m = slug ? moduleForSlug(slug) : undefined;
   const entities = useEntitiesByKind(m?.kind ?? "lore");
+  const assets = useAssetMap();
 
   if (!m) return <Navigate to="/" replace />;
 
@@ -45,8 +48,15 @@ export function EntityListPage() {
               <Link
                 key={e.id}
                 to={`/m/${m.slug}/${e.id}`}
-                className="panel group flex flex-col gap-2 p-4 transition hover:border-arcane/50"
+                className="panel group flex flex-col gap-2 overflow-hidden p-4 transition hover:border-arcane/50"
               >
+                {assets?.get(e.id) && (
+                  <EntityImage
+                    blob={assets.get(e.id)!.blob}
+                    alt={e.name}
+                    className="-mx-4 -mt-4 mb-1 h-32 w-[calc(100%+2rem)] max-w-none"
+                  />
+                )}
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-display text-lg leading-tight text-parchment-100">{e.name}</h3>
                   {e.marker && (

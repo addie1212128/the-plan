@@ -1,6 +1,6 @@
 # Session state (auto-saved — last known reality)
 
-_Updated: 2026-10-30 22:23:13_  ·  branch: `scaffold/worldbuilding-studio`
+_Updated: 2026-10-30 22:43:30_  ·  branch: `scaffold/worldbuilding-studio`
 
 ## Uncommitted changes
 ```
@@ -9,12 +9,13 @@ _Updated: 2026-10-30 22:23:13_  ·  branch: `scaffold/worldbuilding-studio`
 
 Diff stat:
 ```
- .anchor/session-state.md | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ .anchor/session-state.md | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 ```
 
 ## Recent commits
 ```
+bb42a0e Atlas mode: drape a user-uploaded map image over the plane
 bc8e771 Add a relationship graph view
 350488a Tighten Pheocatira canon fidelity after adversarial audit
 b43ef92 Link the Ellie Build Atlas into the app: embed + canon import

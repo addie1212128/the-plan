@@ -21,6 +21,9 @@ files.
 - **A relationship graph.** A force-directed web of every entry, with edges
   built from both explicit links and the `[[wikilinks]]` in bodies — pan, zoom,
   filter by kind, and click through to any entry.
+- **Portraits & cover art.** Attach an image to any entry; it shows on the
+  detail page, as cover art on list cards, and on dashboard / map / graph
+  cards. Stored locally and included in JSON backups.
 - **One interactive 3D world, three ways:**
   - **Atlas** — a map plane with location pins; drape your *own* uploaded map
     image over it (stored locally) so pins sit on your art.

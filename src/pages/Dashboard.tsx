@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Plus, Globe2, ArrowRight, BookMarked } from "lucide-react";
 import { MODULES, moduleFor } from "@/config/modules";
 import { useAllEntities, useEntityCounts } from "@/hooks/useEntities";
+import { useAssetMap } from "@/lib/images";
+import { EntityImage } from "@/components/EntityImage";
 import { PageHeader, EmptyState } from "@/components/ui";
 import { seedDemoWorld } from "@/lib/seed";
 import { importEllieCanon } from "@/lib/canon/ellie";
@@ -10,6 +12,7 @@ import { createBlankEntity } from "@/lib/data";
 export function Dashboard() {
   const counts = useEntityCounts();
   const all = useAllEntities();
+  const assets = useAssetMap();
   const navigate = useNavigate();
   const total = all?.length ?? 0;
 
@@ -112,7 +115,15 @@ export function Dashboard() {
                       to={`/m/${m.slug}/${e.id}`}
                       className="flex items-center gap-3 px-4 py-3 transition hover:bg-ink-600/50"
                     >
-                      <m.icon className="h-4 w-4 shrink-0" style={{ color: m.color }} />
+                      {assets?.get(e.id) ? (
+                        <EntityImage
+                          blob={assets.get(e.id)!.blob}
+                          alt={e.name}
+                          className="h-9 w-9 shrink-0 rounded-md"
+                        />
+                      ) : (
+                        <m.icon className="h-4 w-4 shrink-0" style={{ color: m.color }} />
+                      )}
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-sm text-parchment-100">{e.name}</div>
                         {e.summary && (

@@ -8,6 +8,8 @@ import { updateEntity } from "@/lib/data";
 import { moduleFor } from "@/config/modules";
 import { WorldScene } from "@/world/WorldScene";
 import { useAtlasMap, setAtlasMap, clearAtlasMap } from "@/lib/atlasMap";
+import { useAssetMap } from "@/lib/images";
+import { EntityImage } from "@/components/EntityImage";
 
 const MODE_META: { mode: WorldMode; label: string; icon: typeof Map; hint: string }[] = [
   { mode: "atlas", label: "Atlas", icon: Map, hint: "A flat map plane — drag to pan, scroll to zoom, right-drag to tilt." },
@@ -28,6 +30,7 @@ export function WorldPage() {
   const meta = MODE_META.find((m) => m.mode === mode)!;
 
   // User map image for the Atlas mode (local, per-device).
+  const assets = useAssetMap();
   const atlasMap = useAtlasMap();
   const mapUrl = useMemo(
     () => (atlasMap?.blob ? URL.createObjectURL(atlasMap.blob) : null),
@@ -159,7 +162,14 @@ export function WorldPage() {
               <X className="h-4 w-4" />
             </button>
           </div>
-          {selected.summary && <p className="mt-1 text-sm text-parchment-300/70">{selected.summary}</p>}
+          {assets?.get(selected.id) && (
+            <EntityImage
+              blob={assets.get(selected.id)!.blob}
+              alt={selected.name}
+              className="mt-3 h-28 w-full rounded-lg"
+            />
+          )}
+          {selected.summary && <p className="mt-2 text-sm text-parchment-300/70">{selected.summary}</p>}
           <div className="mt-3 flex items-center gap-2">
             <Link to={`/m/${moduleFor(selected.kind).slug}/${selected.id}`} className="btn-ghost text-sm">
               <ExternalLink className="h-3.5 w-3.5" /> Open entry
