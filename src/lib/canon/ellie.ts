@@ -57,7 +57,7 @@ export const ELLIE_CANON: CanonSeed[] = [
     tags: ["region", "alpine", "mountains"],
     fields: { Type: "Alpine range", Elevation: "Highest in Pheocatira", Feature: "Dragon-legacy summits" },
     marker: atlas(0, -12, 0, "#9fc5e8"),
-    body: "The roof of [[Pheocatira]] — scree, high cliffs, and volumetric god-rays above the snow line. Dragon-legacy summits mark the peaks. Neighbors the [[Frost Expanse]].",
+    body: "The roof of [[Pheocatira]] — scree, high cliffs, and volumetric god-rays above the snow line. Dragon-legacy summits mark the peaks. (On the world-map layout it sits beside the [[Frost Expanse]].)",
   },
   {
     id: "ellie-frost-expanse",
@@ -67,7 +67,7 @@ export const ELLIE_CANON: CanonSeed[] = [
     tags: ["region", "glacial", "snow"],
     fields: { Type: "Glacial waste", Climate: "Subzero", Weather: "Blizzards, snow accumulation" },
     marker: atlas(-5, -13, 0, "#cfe8ff"),
-    body: "The frozen north of [[Pheocatira]] — glaciers, blizzards, and deep snow. Borders the [[Crown Peaks]].",
+    body: "A glacial, subzero stretch of [[Pheocatira]] — glaciers, blizzards, and deep snow. (On the world-map layout it lies beside the [[Crown Peaks]].)",
   },
   {
     id: "ellie-sky-archipelago",
@@ -127,7 +127,7 @@ export const ELLIE_CANON: CanonSeed[] = [
     tags: ["region", "forest", "bioluminescent"],
     fields: { Type: "Forest", Light: "Permanent magic-hour (violet/amber dusk)", Feature: "Emissive flora" },
     marker: atlas(-10, 1, 0, "#b57fff"),
-    body: "A wood where the sun never fully sets — glowing flora and an endless violet-amber dusk. Part of [[Pheocatira]].",
+    body: "A wood where the sun never fully sets — emissive flora and an endless violet-amber dusk; the atlas likens its glow to the [[Crystal Serpents]]' habitat. Part of [[Pheocatira]].",
   },
   {
     id: "ellie-endless-plains",
@@ -466,7 +466,7 @@ export const ELLIE_CANON: CanonSeed[] = [
     id: "ellie-crystal-serpent-scales",
     kind: "item",
     name: "Crystal Serpent Scales",
-    summary: "Shed scales of the Crystal Serpents, used as spell components.",
+    summary: "Scales of the Crystal Serpents, prized as spell components.",
     tags: ["resource", "spell-component", "precious"],
     fields: { Type: "Spell component", Source: "Crystal Serpents" },
     body: "The scales of the [[Crystal Serpents]] of the [[Crystal Basin]], prized as spell components and traded across the world — see [[Trade & the Ring-Sea]].",
