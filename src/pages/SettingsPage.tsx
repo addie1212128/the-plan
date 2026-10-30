@@ -5,6 +5,7 @@ import { vaultAdapter, isVaultSupported } from "@/lib/storage";
 import { importFromVault, exportToVault } from "@/lib/sync";
 import { seedDemoWorld, clearAll } from "@/lib/seed";
 import { importEllieCanon } from "@/lib/canon/ellie";
+import { exportAssets, importAssets } from "@/lib/images";
 import { upsertMany } from "@/lib/data";
 import { db } from "@/lib/db";
 import { useUI } from "@/lib/store";
@@ -78,7 +79,8 @@ export function SettingsPage() {
 
   async function backupJson() {
     const all = await db.entities.toArray();
-    const blob = new Blob([JSON.stringify({ version: 1, entities: all }, null, 2)], {
+    const assets = await exportAssets();
+    const blob = new Blob([JSON.stringify({ version: 2, entities: all, assets }, null, 2)], {
       type: "application/json",
     });
     const url = URL.createObjectURL(blob);
@@ -94,6 +96,7 @@ export function SettingsPage() {
       const data = JSON.parse(await file.text());
       const entities = (data.entities ?? data) as Entity[];
       const n = await upsertMany(entities);
+      await importAssets(data.assets);
       report("ok", `Restored ${n} entr${n === 1 ? "y" : "ies"} from backup.`);
     } catch {
       report("err", "That file didn't look like a valid backup.");

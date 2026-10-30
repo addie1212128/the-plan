@@ -83,4 +83,5 @@ export async function seedDemoWorld(): Promise<void> {
 
 export async function clearAll(): Promise<void> {
   await db.entities.clear();
+  await db.assets.clear();
 }

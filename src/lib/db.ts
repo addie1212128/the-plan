@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from "dexie";
-import type { Entity } from "./types";
+import type { Entity, EntityImage } from "./types";
 
 /**
  * Local-first store. IndexedDB via Dexie is the default data source, so the app
@@ -9,6 +9,7 @@ import type { Entity } from "./types";
 export class LoremDB extends Dexie {
   entities!: EntityTable<Entity, "id">;
   meta!: EntityTable<{ key: string; value: unknown }, "key">;
+  assets!: EntityTable<EntityImage, "entityId">;
 
   constructor() {
     super("loremkeeper");
@@ -16,6 +17,12 @@ export class LoremDB extends Dexie {
       // Indexed fields; `fields`, `body`, `marker` etc. are stored but not indexed.
       entities: "id, kind, name, updatedAt, *tags",
       meta: "key",
+    });
+    // v2: portrait/cover images, one per entity (keyed by entity id).
+    this.version(2).stores({
+      entities: "id, kind, name, updatedAt, *tags",
+      meta: "key",
+      assets: "entityId",
     });
   }
 }

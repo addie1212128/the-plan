@@ -22,6 +22,7 @@ export async function createEntity(input: NewEntity): Promise<Entity> {
     fields: input.fields ?? {},
     links: input.links ?? [],
     marker: input.marker ?? null,
+    image: input.image,
     createdAt: input.createdAt ?? now,
     updatedAt: input.updatedAt ?? now,
   };
@@ -38,6 +39,7 @@ export async function updateEntity(
 
 export async function deleteEntity(id: string): Promise<void> {
   await db.entities.delete(id);
+  await db.assets.delete(id);
 }
 
 export async function createBlankEntity(kind: EntityKind): Promise<Entity> {

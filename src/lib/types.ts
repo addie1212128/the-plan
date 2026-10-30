@@ -41,6 +41,10 @@ export interface Entity {
   body: string;
   /** Kind-specific structured attributes (age, species, population, …). */
   fields: Record<string, string>;
+  /** Original filename of the attached portrait/cover image, if any. The image
+   *  bytes live in the `assets` store (keyed by entity id); this is kept for alt
+   *  text and future Obsidian vault export. */
+  image?: string;
   /** Explicit relationships to other entities, by id. */
   links: string[];
   /** Optional placement on the 3D world. */
@@ -51,3 +55,14 @@ export interface Entity {
 
 export type NewEntity = Omit<Entity, "id" | "createdAt" | "updatedAt"> &
   Partial<Pick<Entity, "id" | "createdAt" | "updatedAt">>;
+
+/** A portrait / cover image attached to an entity. Stored locally (per device). */
+export interface EntityImage {
+  /** Primary key = the owning entity's id (one portrait per entity). */
+  entityId: string;
+  blob: Blob;
+  name: string;
+  width: number;
+  height: number;
+  type: string;
+}

@@ -4,12 +4,15 @@ import { Waypoints, ExternalLink, X } from "lucide-react";
 import { useAllEntities } from "@/hooks/useEntities";
 import { buildGraphData } from "@/lib/graph";
 import { RelationshipGraph } from "@/components/RelationshipGraph";
+import { useAssetMap } from "@/lib/images";
+import { EntityImage } from "@/components/EntityImage";
 import { MODULES, moduleFor } from "@/config/modules";
 import type { EntityKind } from "@/lib/types";
 import { EmptyState } from "@/components/ui";
 
 export function GraphPage() {
   const entities = useAllEntities();
+  const assets = useAssetMap();
   const [hidden, setHidden] = useState<Set<EntityKind>>(new Set());
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -106,7 +109,14 @@ export function GraphPage() {
               <X className="h-4 w-4" />
             </button>
           </div>
-          {selected.summary && <p className="mt-1 text-sm text-parchment-300/70">{selected.summary}</p>}
+          {assets?.get(selected.id) && (
+            <EntityImage
+              blob={assets.get(selected.id)!.blob}
+              alt={selected.name}
+              className="mt-3 h-32 w-full rounded-lg"
+            />
+          )}
+          {selected.summary && <p className="mt-2 text-sm text-parchment-300/70">{selected.summary}</p>}
           <div className="mt-3">
             <div className="mb-1 text-xs font-medium uppercase tracking-wider text-parchment-300/50">
               Connections · {connections.length}

@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
-import { ChevronLeft, Trash2, Eye, Pencil, MapPin, Plus, X } from "lucide-react";
+import { ChevronLeft, Trash2, Eye, Pencil, MapPin, Plus, X, ImagePlus, ImageUp } from "lucide-react";
 import { moduleForSlug, moduleFor } from "@/config/modules";
 import { useEntity } from "@/hooks/useEntities";
 import { updateEntity, deleteEntity } from "@/lib/data";
 import type { Entity } from "@/lib/types";
 import { LoreMarkdown } from "@/components/LoreMarkdown";
+import { EntityImage } from "@/components/EntityImage";
+import { useEntityImage, setEntityImage, removeEntityImage } from "@/lib/images";
 import { Field } from "@/components/ui";
 
 export function EntityDetailPage() {
@@ -139,6 +141,8 @@ function SidePanel({ entity }: { entity: Entity }) {
 
   return (
     <div className="space-y-5 lg:border-l lg:border-ink-600 lg:pl-6">
+      <PortraitPanel entity={entity} />
+
       <Field label="Summary">
         <textarea
           value={summary}
@@ -184,6 +188,56 @@ function SidePanel({ entity }: { entity: Entity }) {
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+function PortraitPanel({ entity }: { entity: Entity }) {
+  const img = useEntityImage(entity.id);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    e.target.value = "";
+    if (f) {
+      try {
+        await setEntityImage(entity.id, f);
+      } catch {
+        /* non-image / unreadable */
+      }
+    }
+  }
+
+  return (
+    <div>
+      <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPick} />
+      {img ? (
+        <div className="group relative overflow-hidden rounded-xl border border-ink-500">
+          <EntityImage blob={img.blob} alt={entity.name} className="h-48 w-full" />
+          <div className="absolute inset-x-0 bottom-0 flex gap-2 bg-gradient-to-t from-ink-900/95 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
+            <button
+              className="btn-ghost flex-1 bg-ink-800/80 text-xs"
+              onClick={() => fileRef.current?.click()}
+            >
+              <ImageUp className="h-3.5 w-3.5" /> Replace
+            </button>
+            <button
+              className="btn-ghost bg-ink-800/80 text-xs text-ember-soft hover:bg-ember/20"
+              onClick={() => removeEntityImage(entity.id)}
+              title="Remove image"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          onClick={() => fileRef.current?.click()}
+          className="flex h-28 w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-ink-500 text-sm text-parchment-300/60 transition hover:border-arcane/50 hover:text-parchment-200"
+        >
+          <ImagePlus className="h-6 w-6" /> Add a portrait
+        </button>
+      )}
     </div>
   );
 }
