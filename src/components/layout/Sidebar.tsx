@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { LayoutDashboard, Globe2, BookMarked, Waypoints, Settings, PanelLeftClose, PanelLeft } from "lucide-react";
 import clsx from "clsx";
-import { MODULES } from "@/config/modules";
+import { MODULES, modulePath } from "@/config/modules";
 import { useUI } from "@/lib/store";
 import { useEntityCounts } from "@/hooks/useEntities";
 
@@ -45,7 +45,7 @@ export function Sidebar() {
         {MODULES.map((m) => (
           <NavItem
             key={m.kind}
-            to={`/m/${m.slug}`}
+            to={modulePath(m)}
             icon={<m.icon className="h-4 w-4" style={{ color: m.color }} />}
             label={m.label}
             collapsed={collapsed}

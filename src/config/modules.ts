@@ -116,3 +116,8 @@ export function moduleForSlug(slug: string): ModuleDef | undefined {
 export function colorForKind(kind: EntityKind): string {
   return byKind.get(kind)?.color ?? "#e07a3f";
 }
+
+/** Where a module's nav entry should link. Events get the chronological Timeline. */
+export function modulePath(m: ModuleDef): string {
+  return m.kind === "event" ? "/timeline" : `/m/${m.slug}`;
+}
