@@ -93,6 +93,34 @@ export class VaultAdapter implements StorageAdapter {
     await writable.close();
   }
 
+  /** Write an arbitrary file at a vault-relative path, creating folders as needed. */
+  async writeFileAt(path: string, data: Blob | string): Promise<void> {
+    if (!this.dir) throw new Error("No vault connected.");
+    const parts = path.split("/");
+    const fileName = parts.pop()!;
+    let dir = this.dir;
+    for (const seg of parts) dir = await dir.getDirectoryHandle(seg, { create: true });
+    const fileHandle = await dir.getFileHandle(fileName, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(data);
+    await writable.close();
+  }
+
+  /** Read a file at a vault-relative path, or undefined if it isn't there. */
+  async readFileAt(path: string): Promise<Blob | undefined> {
+    if (!this.dir) return undefined;
+    const parts = path.split("/");
+    const fileName = parts.pop()!;
+    try {
+      let dir = this.dir;
+      for (const seg of parts) dir = await dir.getDirectoryHandle(seg);
+      const fileHandle = await dir.getFileHandle(fileName);
+      return await fileHandle.getFile();
+    } catch {
+      return undefined;
+    }
+  }
+
   async remove(id: string): Promise<void> {
     if (!this.dir) return;
     const entity = await this.get(id);
