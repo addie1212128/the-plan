@@ -45,4 +45,6 @@ Strict TypeScript is on (incl. noUnusedLocals/Parameters) — keep it clean.
 
 - 3D bundle is large (~1.4 MB); consider lazy-loading `WorldPage`.
 - Vault sync is manual import/export; live file watching is a planned follow-up.
-- Atlas mode is a flat grid; heightmap / uploaded-image terrain is a future idea.
+- Atlas mode can drape a user-uploaded map image over the plane
+  (`src/lib/atlasMap.ts`, stored in the Dexie `meta` table); 3D heightmap
+  terrain is still a future idea.
