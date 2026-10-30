@@ -18,6 +18,9 @@ files.
   frontmatter. Link a folder (your vault) and import/export the real files.
 - **A wiki that links itself.** Write in markdown with Obsidian-style
   `[[wikilinks]]` that resolve to other entries.
+- **A relationship graph.** A force-directed web of every entry, with edges
+  built from both explicit links and the `[[wikilinks]]` in bodies — pan, zoom,
+  filter by kind, and click through to any entry.
 - **One interactive 3D world, three ways:**
   - **Atlas** — a flat map plane with location pins.
   - **Diorama** — a low-poly 3D landscape you orbit.

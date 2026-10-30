@@ -5,6 +5,7 @@ import { EntityListPage } from "./pages/EntityListPage";
 import { EntityDetailPage } from "./pages/EntityDetailPage";
 import { WorldPage } from "./pages/WorldPage";
 import { AtlasPage } from "./pages/AtlasPage";
+import { GraphPage } from "./pages/GraphPage";
 import { SettingsPage } from "./pages/SettingsPage";
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/world" element={<WorldPage />} />
         <Route path="/atlas" element={<AtlasPage />} />
+        <Route path="/graph" element={<GraphPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/m/:slug" element={<EntityListPage />} />
         <Route path="/m/:slug/:id" element={<EntityDetailPage />} />
