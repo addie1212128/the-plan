@@ -1,34 +1,32 @@
 # Session state (auto-saved — last known reality)
 
-_Updated: 2026-10-30 21:49:28_  ·  branch: `master`
+_Updated: 2026-10-30 22:05:09_  ·  branch: `scaffold/worldbuilding-studio`
 
 ## Uncommitted changes
 ```
-?? .anchor/
-?? .gitignore
-?? CLAUDE.md
-?? README.md
-?? index.html
-?? package-lock.json
-?? package.json
-?? postcss.config.js
-?? public/
-?? src/
-?? tailwind.config.js
-?? tsconfig.app.json
-?? tsconfig.json
-?? tsconfig.node.json
-?? vite.config.ts
+ M .anchor/session-state.md
+ M src/App.tsx
+ M src/components/layout/Sidebar.tsx
+ M src/pages/Dashboard.tsx
+ M src/pages/SettingsPage.tsx
+?? public/atlas/
+?? src/lib/canon/
+?? src/pages/AtlasPage.tsx
 ```
 
 Diff stat:
 ```
-
+ .anchor/session-state.md          | 36 +++++++++---------------------------
+ src/App.tsx                       |  2 ++
+ src/components/layout/Sidebar.tsx |  3 ++-
+ src/pages/Dashboard.tsx           | 31 ++++++++++++++++++++++++++-----
+ src/pages/SettingsPage.tsx        | 24 +++++++++++++++++++++++-
+ 5 files changed, 62 insertions(+), 34 deletions(-)
 ```
 
 ## Recent commits
 ```
-(no history)
+70c055c Scaffold local-first worldbuilding studio
 ```
 
 ## Resume

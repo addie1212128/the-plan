@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { FolderGit2, Download, Upload, Trash2, Sparkles, HardDrive, Link2Off, Info } from "lucide-react";
+import { FolderGit2, Download, Upload, Trash2, Sparkles, HardDrive, Link2Off, Info, BookMarked } from "lucide-react";
 import { PageHeader } from "@/components/ui";
 import { vaultAdapter, isVaultSupported } from "@/lib/storage";
 import { importFromVault, exportToVault } from "@/lib/sync";
 import { seedDemoWorld, clearAll } from "@/lib/seed";
+import { importEllieCanon } from "@/lib/canon/ellie";
 import { upsertMany } from "@/lib/data";
 import { db } from "@/lib/db";
 import { useUI } from "@/lib/store";
@@ -188,6 +189,27 @@ export function SettingsPage() {
               }}
             />
           </div>
+        </section>
+
+        {/* Pheocatira canon */}
+        <section className="panel p-5">
+          <div className="flex items-center gap-2">
+            <BookMarked className="h-5 w-5 text-ember" />
+            <h2 className="font-display text-xl text-parchment-100">Pheocatira canon</h2>
+          </div>
+          <p className="mt-1 text-sm text-parchment-300/70">
+            Import the world of <em>Ellie, the Last Dragon</em> from your Build Atlas — 14 regions,
+            10 races, the mana-vein lore, the bestiary, Ellie, and map pins. Safe to run again; it
+            updates the canon entries in place.
+          </p>
+          <button
+            className="btn-ember mt-4"
+            onClick={() =>
+              importEllieCanon().then((n) => report("ok", `Imported ${n} canon entries from the Build Atlas.`))
+            }
+          >
+            <BookMarked className="h-4 w-4" /> Import Pheocatira canon
+          </button>
         </section>
 
         {/* Example / danger */}
