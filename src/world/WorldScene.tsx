@@ -1,4 +1,5 @@
-import { Canvas, type ThreeEvent } from "@react-three/fiber";
+import { Suspense, useMemo } from "react";
+import { Canvas, useLoader, type ThreeEvent } from "@react-three/fiber";
 import { OrbitControls, Grid, Html, Stars, Edges } from "@react-three/drei";
 import * as THREE from "three";
 import type { Entity, WorldMode } from "@/lib/types";
@@ -14,6 +15,10 @@ export interface WorldSceneProps {
   onSelect: (id: string) => void;
   /** Fired when the user clicks empty ground/surface while in placement mode. */
   onPlace: (coords: { x: number; y: number; z: number }) => void;
+  /** Optional object URL of a user map image to drape over the Atlas plane. */
+  mapUrl?: string | null;
+  /** Aspect ratio (width / height) of that map image. */
+  mapAspect?: number;
 }
 
 export function WorldScene(props: WorldSceneProps) {
@@ -31,7 +36,16 @@ export function WorldScene(props: WorldSceneProps) {
       <directionalLight position={[10, 18, 8]} intensity={1.1} castShadow />
       <Stars radius={120} depth={40} count={1800} factor={3} saturation={0} fade speed={0.5} />
 
-      {props.mode === "atlas" && <AtlasGround placing={props.placing} onPlace={props.onPlace} />}
+      {props.mode === "atlas" && (
+        <Suspense fallback={null}>
+          <AtlasGround
+            placing={props.placing}
+            onPlace={props.onPlace}
+            mapUrl={props.mapUrl}
+            mapAspect={props.mapAspect}
+          />
+        </Suspense>
+      )}
       {props.mode === "diorama" && <DioramaGround placing={props.placing} onPlace={props.onPlace} />}
       {props.mode === "globe" && <GlobeBody placing={props.placing} onPlace={props.onPlace} />}
 
@@ -51,7 +65,22 @@ export function WorldScene(props: WorldSceneProps) {
 
 /* ---------- Grounds ---------- */
 
-function AtlasGround({ placing, onPlace }: { placing: boolean; onPlace: WorldSceneProps["onPlace"] }) {
+function AtlasGround({
+  placing,
+  onPlace,
+  mapUrl,
+  mapAspect,
+}: {
+  placing: boolean;
+  onPlace: WorldSceneProps["onPlace"];
+  mapUrl?: string | null;
+  mapAspect?: number;
+}) {
+  if (mapUrl) {
+    return (
+      <MapPlane url={mapUrl} aspect={mapAspect && mapAspect > 0 ? mapAspect : 1} placing={placing} onPlace={onPlace} />
+    );
+  }
   return (
     <group>
       <mesh
@@ -73,6 +102,44 @@ function AtlasGround({ placing, onPlace }: { placing: boolean; onPlace: WorldSce
         infiniteGrid={false}
         position={[0, 0.01, 0]}
       />
+    </group>
+  );
+}
+
+/** The user's own map image draped flat on the Atlas plane, sized to its aspect ratio. */
+function MapPlane({
+  url,
+  aspect,
+  placing,
+  onPlace,
+}: {
+  url: string;
+  aspect: number;
+  placing: boolean;
+  onPlace: WorldSceneProps["onPlace"];
+}) {
+  const texture = useLoader(THREE.TextureLoader, url);
+  useMemo(() => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 8;
+    texture.needsUpdate = true;
+  }, [texture]);
+
+  const MAX = 48;
+  const w = aspect >= 1 ? MAX : MAX * aspect;
+  const h = aspect >= 1 ? MAX / aspect : MAX;
+
+  return (
+    <group>
+      {/* dark mat / border behind the map */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
+        <planeGeometry args={[w + 2, h + 2]} />
+        <meshBasicMaterial color="#0b0d12" />
+      </mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} onClick={(e) => handleGroundPlace(e, placing, onPlace)}>
+        <planeGeometry args={[w, h, 1, 1]} />
+        <meshBasicMaterial map={texture} toneMapped={false} />
+      </mesh>
     </group>
   );
 }

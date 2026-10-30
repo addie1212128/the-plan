@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Map, Mountain, Globe2, MapPin, Plus, X, ExternalLink } from "lucide-react";
+import { Map, Mountain, Globe2, MapPin, Plus, X, ExternalLink, ImageUp, Image as ImageIcon, Trash2 } from "lucide-react";
 import type { Entity, WorldMode } from "@/lib/types";
 import { useUI } from "@/lib/store";
 import { useAllEntities, useMarkers } from "@/hooks/useEntities";
 import { updateEntity } from "@/lib/data";
 import { moduleFor } from "@/config/modules";
 import { WorldScene } from "@/world/WorldScene";
+import { useAtlasMap, setAtlasMap, clearAtlasMap } from "@/lib/atlasMap";
 
 const MODE_META: { mode: WorldMode; label: string; icon: typeof Map; hint: string }[] = [
   { mode: "atlas", label: "Atlas", icon: Map, hint: "A flat map plane — drag to pan, scroll to zoom, right-drag to tilt." },
@@ -25,6 +26,32 @@ export function WorldPage() {
   const selected = markers.find((m) => m.id === selectedId) ?? null;
   const unplaced = allEntities.filter((e) => e.marker?.mode !== mode);
   const meta = MODE_META.find((m) => m.mode === mode)!;
+
+  // User map image for the Atlas mode (local, per-device).
+  const atlasMap = useAtlasMap();
+  const mapUrl = useMemo(
+    () => (atlasMap?.blob ? URL.createObjectURL(atlasMap.blob) : null),
+    [atlasMap?.blob],
+  );
+  useEffect(() => {
+    return () => {
+      if (mapUrl) URL.revokeObjectURL(mapUrl);
+    };
+  }, [mapUrl]);
+  const mapAspect = atlasMap ? atlasMap.width / atlasMap.height : undefined;
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onPickMap(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    e.target.value = "";
+    if (f) {
+      try {
+        await setAtlasMap(f);
+      } catch {
+        /* non-image / unreadable; ignore */
+      }
+    }
+  }
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -50,6 +77,8 @@ export function WorldPage() {
         placing={placingId !== null}
         onSelect={setSelectedId}
         onPlace={place}
+        mapUrl={mode === "atlas" ? mapUrl : null}
+        mapAspect={mapAspect}
       />
 
       {/* Mode switcher */}
@@ -145,6 +174,42 @@ export function WorldPage() {
               Remove pin
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Map image control (Atlas mode) */}
+      {mode === "atlas" && (
+        <div className="panel absolute bottom-4 right-4 w-64 p-3">
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onPickMap} />
+          <div className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-parchment-300/60">
+            <ImageIcon className="h-3.5 w-3.5" /> Map image
+          </div>
+          {atlasMap ? (
+            <div className="space-y-2">
+              <div className="truncate text-sm text-parchment-200">{atlasMap.name}</div>
+              <div className="flex gap-2">
+                <button className="btn-ghost flex-1 text-sm" onClick={() => fileRef.current?.click()}>
+                  <ImageUp className="h-3.5 w-3.5" /> Replace
+                </button>
+                <button
+                  className="btn-ghost text-sm text-ember-soft hover:bg-ember/10"
+                  onClick={() => clearAtlasMap()}
+                  title="Remove map"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <button className="btn-primary w-full text-sm" onClick={() => fileRef.current?.click()}>
+                <ImageUp className="h-4 w-4" /> Upload a map image
+              </button>
+              <p className="mt-2 text-[11px] leading-snug text-parchment-300/50">
+                Drape your own map over the Atlas. Pins keep their spots. Stored on this device.
+              </p>
+            </>
+          )}
         </div>
       )}
     </div>

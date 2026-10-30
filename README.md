@@ -22,7 +22,8 @@ files.
   built from both explicit links and the `[[wikilinks]]` in bodies — pan, zoom,
   filter by kind, and click through to any entry.
 - **One interactive 3D world, three ways:**
-  - **Atlas** — a flat map plane with location pins.
+  - **Atlas** — a map plane with location pins; drape your *own* uploaded map
+    image over it (stored locally) so pins sit on your art.
   - **Diorama** — a low-poly 3D landscape you orbit.
   - **Globe** — a whole planet you spin and zoom.
   Pin any entry onto any mode and click through to its page.
