@@ -1,14 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { ChevronLeft, Trash2, Eye, Pencil, MapPin, Plus, X, ImagePlus, ImageUp } from "lucide-react";
 import { moduleForSlug, moduleFor } from "@/config/modules";
 import { useEntity } from "@/hooks/useEntities";
 import { updateEntity, deleteEntity } from "@/lib/data";
 import type { Entity } from "@/lib/types";
-import { LoreMarkdown } from "@/components/LoreMarkdown";
 import { EntityImage } from "@/components/EntityImage";
 import { useEntityImage, setEntityImage, removeEntityImage } from "@/lib/images";
 import { Field } from "@/components/ui";
+
+// react-markdown + remark-gfm only load when an entry is viewed in Read mode.
+const LoreMarkdown = lazy(() =>
+  import("@/components/LoreMarkdown").then((m) => ({ default: m.LoreMarkdown })),
+);
 
 export function EntityDetailPage() {
   const { slug, id } = useParams();
@@ -126,7 +130,9 @@ function Editor({ entity, mode }: { entity: Entity; mode: "edit" | "read" }) {
             className="input min-h-[50vh] resize-y font-mono text-[13px] leading-relaxed"
           />
         ) : (
-          <LoreMarkdown body={entity.body} />
+          <Suspense fallback={<p className="text-parchment-300/40">Rendering…</p>}>
+            <LoreMarkdown body={entity.body} />
+          </Suspense>
         )}
       </div>
     </div>
