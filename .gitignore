@@ -20,3 +20,6 @@ pnpm-debug.log*
 # Build / cache
 .vite
 *.tsbuildinfo
+
+# Local plugin session state (anchor-memory) — regenerated each turn
+.anchor/
