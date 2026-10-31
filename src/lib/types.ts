@@ -9,10 +9,15 @@
 
 export type EntityKind =
   | "character"
-  | "location"
-  | "faction"
-  | "item"
+  | "species"
   | "creature"
+  | "faction"
+  | "location"
+  | "item"
+  | "language"
+  | "religion"
+  | "culture"
+  | "magic"
   | "event"
   | "lore";
 
@@ -39,6 +44,9 @@ export interface Entity {
   tags: string[];
   /** Markdown body. May contain [[wikilinks]] to other entities by name. */
   body: string;
+  /** Optional sub-category within the module (e.g. a Character in "House Varr",
+   *  a Location that is a "City"). Used to group entries on the list page. */
+  category?: string;
   /** Kind-specific structured attributes (age, species, population, …). */
   fields: Record<string, string>;
   /** Original filename of the attached portrait/cover image, if any. The image

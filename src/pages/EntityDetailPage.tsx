@@ -163,6 +163,8 @@ function SidePanel({ entity }: { entity: Entity }) {
         />
       </Field>
 
+      <CategoryField entity={entity} />
+
       <Field label="Tags">
         <TagInput
           tags={entity.tags}
@@ -198,6 +200,37 @@ function SidePanel({ entity }: { entity: Entity }) {
 
       <Backlinks entity={entity} />
     </div>
+  );
+}
+
+function CategoryField({ entity }: { entity: Entity }) {
+  const all = useAllEntities();
+  const [value, setValue] = useState(entity.category ?? "");
+  useEffect(() => setValue(entity.category ?? ""), [entity.id, entity.category]);
+
+  const options = useMemo(() => {
+    const set = new Set<string>();
+    for (const e of all ?? []) if (e.kind === entity.kind && e.category) set.add(e.category);
+    return [...set].sort();
+  }, [all, entity.kind]);
+
+  const listId = `cats-${entity.kind}`;
+  return (
+    <Field label="Category">
+      <input
+        className="input"
+        list={listId}
+        value={value}
+        placeholder="group these entries, e.g. House Varr, Cities…"
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={() => updateEntity(entity.id, { category: value.trim() })}
+      />
+      <datalist id={listId}>
+        {options.map((o) => (
+          <option key={o} value={o} />
+        ))}
+      </datalist>
+    </Field>
   );
 }
 

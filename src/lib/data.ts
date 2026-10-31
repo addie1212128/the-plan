@@ -19,6 +19,7 @@ export async function createEntity(input: NewEntity): Promise<Entity> {
     summary: input.summary ?? "",
     tags: input.tags ?? [],
     body: input.body ?? "",
+    category: input.category,
     fields: input.fields ?? {},
     links: input.links ?? [],
     marker: input.marker ?? null,
@@ -42,7 +43,7 @@ export async function deleteEntity(id: string): Promise<void> {
   await db.assets.delete(id);
 }
 
-export async function createBlankEntity(kind: EntityKind): Promise<Entity> {
+export async function createBlankEntity(kind: EntityKind, category?: string): Promise<Entity> {
   const m = moduleFor(kind);
   return createEntity({
     kind,
@@ -50,6 +51,7 @@ export async function createBlankEntity(kind: EntityKind): Promise<Entity> {
     summary: "",
     tags: [],
     body: "",
+    category,
     fields: {},
     links: [],
     marker: null,

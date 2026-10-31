@@ -473,6 +473,22 @@ export const ELLIE_CANON: CanonSeed[] = [
   },
 ];
 
+/** A tidy default sub-category per canon entity, so the list pages group nicely. */
+function canonCategory(c: CanonSeed): string | undefined {
+  switch (c.kind) {
+    case "location":
+      return c.id === "ellie-pheocatira" ? "The World" : "Regions";
+    case "faction":
+      return "Peoples";
+    case "creature":
+      return "Bestiary";
+    case "lore":
+      return "World Systems";
+    default:
+      return undefined; // characters, items stay uncategorized
+  }
+}
+
 /** Import (idempotent) the Pheocatira canon into the local store. Returns count. */
 export async function importEllieCanon(): Promise<number> {
   const now = Date.now();
@@ -486,6 +502,7 @@ export async function importEllieCanon(): Promise<number> {
         summary: c.summary ?? "",
         tags: c.tags ?? [],
         body: c.body ?? "",
+        category: canonCategory(c),
         fields: c.fields ?? {},
         links: c.links ?? [],
         marker: c.marker ?? null,
