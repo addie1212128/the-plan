@@ -20,7 +20,9 @@ interactive 3D world + Obsidian vault sync). See `README.md` for the full tour.
   — `src/pages/TimelinePage.tsx` — and nav routes to it via `modulePath()`.)
   Entries also have an optional `category` (sub-category) string: the list page
   groups by it and the detail page edits it with an autocomplete of existing
-  values for that kind.
+  values for that kind. There are 35 modules; each carries a `group`
+  (`MODULE_GROUPS`), and the sidebar + dashboard render them grouped via
+  `modulesByGroup()`. The sidebar groups are collapsible.
 - **Obsidian compatibility is a feature, keep it.** Entities round-trip through
   `src/lib/frontmatter.ts` (YAML frontmatter + markdown body, `[[wikilinks]]`).
   If you add fields to `Entity`, make them serialize sensibly there.

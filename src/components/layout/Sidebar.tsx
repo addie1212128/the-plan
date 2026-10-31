@@ -1,7 +1,18 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, Globe2, BookMarked, Waypoints, Settings, PanelLeftClose, PanelLeft } from "lucide-react";
+import {
+  LayoutDashboard,
+  Globe2,
+  BookMarked,
+  Waypoints,
+  Settings,
+  PanelLeftClose,
+  PanelLeft,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import clsx from "clsx";
-import { MODULES, modulePath } from "@/config/modules";
+import { modulePath, modulesByGroup } from "@/config/modules";
 import { useUI } from "@/lib/store";
 import { useEntityCounts } from "@/hooks/useEntities";
 
@@ -9,6 +20,15 @@ export function Sidebar() {
   const collapsed = useUI((s) => s.sidebarCollapsed);
   const toggle = useUI((s) => s.toggleSidebar);
   const counts = useEntityCounts();
+  const [closedGroups, setClosedGroups] = useState<Set<string>>(new Set());
+  const groups = modulesByGroup();
+
+  const toggleGroup = (g: string) =>
+    setClosedGroups((prev) => {
+      const next = new Set(prev);
+      next.has(g) ? next.delete(g) : next.add(g);
+      return next;
+    });
 
   return (
     <aside
@@ -37,21 +57,47 @@ export function Sidebar() {
         <NavItem to="/graph" icon={<Waypoints className="h-4 w-4" />} label="Relationships" collapsed={collapsed} />
         <NavItem to="/atlas" icon={<BookMarked className="h-4 w-4 text-ember" />} label="Build Atlas" collapsed={collapsed} />
 
-        {!collapsed && (
-          <div className="px-3 pb-1 pt-4 text-[11px] font-semibold uppercase tracking-wider text-parchment-300/50">
-            Compendium
-          </div>
-        )}
-        {MODULES.map((m) => (
-          <NavItem
-            key={m.kind}
-            to={modulePath(m)}
-            icon={<m.icon className="h-4 w-4" style={{ color: m.color }} />}
-            label={m.label}
-            collapsed={collapsed}
-            count={counts?.[m.kind]}
-          />
-        ))}
+        {collapsed
+          ? // Icon-only mode: flat list with a divider between groups.
+            groups.map((g, i) => (
+              <div key={g.group} className={clsx(i > 0 && "mt-1 border-t border-ink-600/60 pt-1")}>
+                {g.modules.map((m) => (
+                  <NavItem
+                    key={m.kind}
+                    to={modulePath(m)}
+                    icon={<m.icon className="h-4 w-4" style={{ color: m.color }} />}
+                    label={m.label}
+                    collapsed
+                    count={counts?.[m.kind]}
+                  />
+                ))}
+              </div>
+            ))
+          : groups.map((g) => {
+              const open = !closedGroups.has(g.group);
+              return (
+                <div key={g.group} className="pt-2">
+                  <button
+                    onClick={() => toggleGroup(g.group)}
+                    className="flex w-full items-center gap-1 px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-parchment-300/50 transition hover:text-parchment-300/80"
+                  >
+                    {open ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+                    {g.group}
+                  </button>
+                  {open &&
+                    g.modules.map((m) => (
+                      <NavItem
+                        key={m.kind}
+                        to={modulePath(m)}
+                        icon={<m.icon className="h-4 w-4" style={{ color: m.color }} />}
+                        label={m.label}
+                        collapsed={false}
+                        count={counts?.[m.kind]}
+                      />
+                    ))}
+                </div>
+              );
+            })}
       </nav>
 
       <div className="space-y-1 border-t border-ink-600 px-2 py-2">

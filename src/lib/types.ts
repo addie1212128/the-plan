@@ -8,18 +8,46 @@
  */
 
 export type EntityKind =
+  // People & Beings
   | "character"
   | "species"
   | "creature"
   | "faction"
+  | "organization"
+  | "title"
+  | "deity"
+  // Places
   | "location"
+  | "realm"
+  | "landmark"
+  | "battle"
+  // Things
   | "item"
+  | "artifact"
+  | "flora"
+  | "material"
+  | "tech"
+  | "vehicle"
+  | "food"
+  // Society & Lore
   | "language"
   | "religion"
   | "culture"
   | "magic"
+  | "law"
+  | "economy"
+  | "philosophy"
+  | "tradition"
+  | "myth"
+  | "prophecy"
+  | "text"
+  | "lore"
+  // Story
   | "event"
-  | "lore";
+  | "manuscript"
+  | "plot"
+  | "theme"
+  | "note";
 
 /** Which 3D world view a marker belongs to. The world supports all three. */
 export type WorldMode = "atlas" | "diorama" | "globe";
