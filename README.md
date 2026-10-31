@@ -12,6 +12,10 @@ files.
 
 ## Highlights
 
+- **Campfire-style categories & sub-categories.** Twelve modules — Characters,
+  Species, Creatures, Factions, Locations, Items, Languages, Religions,
+  Cultures, Magic & Systems, Timeline, Lore — and every entry can carry a
+  sub-category that groups it on its module's list page.
 - **Local-first, no accounts.** Everything is stored privately in your browser
   (IndexedDB). Nothing is uploaded to a server.
 - **Obsidian-friendly.** Entries serialize 1:1 to markdown files with YAML
