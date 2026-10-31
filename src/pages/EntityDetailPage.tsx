@@ -2,7 +2,8 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useNavigate, Link, Navigate } from "react-router-dom";
 import { ChevronLeft, Trash2, Eye, Pencil, MapPin, Plus, X, ImagePlus, ImageUp } from "lucide-react";
 import { moduleForSlug, moduleFor } from "@/config/modules";
-import { useEntity } from "@/hooks/useEntities";
+import { useEntity, useAllEntities } from "@/hooks/useEntities";
+import { extractWikilinks } from "@/lib/graph";
 import { updateEntity, deleteEntity } from "@/lib/data";
 import type { Entity } from "@/lib/types";
 import { EntityImage } from "@/components/EntityImage";
@@ -193,6 +194,47 @@ function SidePanel({ entity }: { entity: Entity }) {
             Not placed. Open the <Link to="/world" className="text-arcane-soft underline">World Map</Link> to pin it.
           </p>
         )}
+      </div>
+
+      <Backlinks entity={entity} />
+    </div>
+  );
+}
+
+function Backlinks({ entity }: { entity: Entity }) {
+  const all = useAllEntities();
+  const refs = useMemo(() => {
+    if (!all) return [];
+    const nameLc = entity.name.toLowerCase();
+    return all.filter(
+      (e) =>
+        e.id !== entity.id &&
+        (e.links.includes(entity.id) ||
+          extractWikilinks(e.body).some((n) => n.toLowerCase() === nameLc)),
+    );
+  }, [all, entity.id, entity.name]);
+
+  if (refs.length === 0) return null;
+
+  return (
+    <div>
+      <div className="mb-2 text-xs font-medium uppercase tracking-wider text-parchment-300/60">
+        Mentioned in · {refs.length}
+      </div>
+      <div className="space-y-1">
+        {refs.map((r) => {
+          const m = moduleFor(r.kind);
+          return (
+            <Link
+              key={r.id}
+              to={`/m/${m.slug}/${r.id}`}
+              className="flex items-center gap-2 rounded-md px-2 py-1 text-sm transition hover:bg-ink-600/50"
+            >
+              <m.icon className="h-4 w-4 shrink-0" style={{ color: m.color }} />
+              <span className="flex-1 truncate text-parchment-100">{r.name}</span>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
