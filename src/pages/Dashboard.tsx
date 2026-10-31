@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Sparkles, Plus, Globe2, ArrowRight, BookMarked } from "lucide-react";
-import { MODULES, moduleFor, modulePath } from "@/config/modules";
+import { modulesByGroup, moduleFor, modulePath } from "@/config/modules";
 import { useAllEntities, useEntityCounts } from "@/hooks/useEntities";
 import { useAssetMap } from "@/lib/images";
 import { EntityImage } from "@/components/EntityImage";
@@ -77,30 +77,39 @@ export function Dashboard() {
               <ArrowRight className="h-5 w-5 text-parchment-300/40 transition group-hover:text-ember" />
             </Link>
 
-            <section>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {MODULES.map((m) => (
-                  <Link
-                    key={m.kind}
-                    to={modulePath(m)}
-                    className="panel group flex items-center gap-3 p-4 transition hover:border-arcane/50"
-                  >
-                    <div
-                      className="grid h-11 w-11 place-items-center rounded-lg"
-                      style={{ backgroundColor: `${m.color}22` }}
-                    >
-                      <m.icon className="h-5 w-5" style={{ color: m.color }} />
-                    </div>
-                    <div className="min-w-0">
-                      <div className="truncate text-sm text-parchment-200">{m.label}</div>
-                      <div className="text-2xl font-semibold tabular-nums text-parchment-100">
-                        {counts?.[m.kind] ?? 0}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
+            {modulesByGroup().map(({ group, modules }) => {
+              const present = modules.filter((m) => (counts?.[m.kind] ?? 0) > 0);
+              if (present.length === 0) return null;
+              return (
+                <section key={group}>
+                  <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-parchment-300/50">
+                    {group}
+                  </h2>
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                    {present.map((m) => (
+                      <Link
+                        key={m.kind}
+                        to={modulePath(m)}
+                        className="panel group flex items-center gap-3 p-4 transition hover:border-arcane/50"
+                      >
+                        <div
+                          className="grid h-11 w-11 place-items-center rounded-lg"
+                          style={{ backgroundColor: `${m.color}22` }}
+                        >
+                          <m.icon className="h-5 w-5" style={{ color: m.color }} />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="truncate text-sm text-parchment-200">{m.label}</div>
+                          <div className="text-2xl font-semibold tabular-nums text-parchment-100">
+                            {counts?.[m.kind] ?? 0}
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
 
             <section>
               <div className="mb-3 flex items-center justify-between">
