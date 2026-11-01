@@ -1,5 +1,6 @@
 import { Sidebar } from "./Sidebar";
 import { TopBar } from "./TopBar";
+import { CommandPalette } from "@/components/CommandPalette";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -9,6 +10,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <TopBar />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
+      <CommandPalette />
     </div>
   );
 }

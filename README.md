@@ -24,6 +24,8 @@ files.
 - **A wiki that links itself.** Write in markdown with Obsidian-style
   `[[wikilinks]]` that resolve to other entries, and every entry shows a
   "Mentioned in" backlinks panel of what points at it.
+- **Command palette (⌘K / Ctrl-K).** Jump to any entry, category, or page from
+  anywhere, or create a new entry — fuzzy-searched, keyboard-driven.
 - **A relationship graph.** A force-directed web of every entry, with edges
   built from both explicit links and the `[[wikilinks]]` in bodies — pan, zoom,
   filter by kind, and click through to any entry.

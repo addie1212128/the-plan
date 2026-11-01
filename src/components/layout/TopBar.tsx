@@ -1,14 +1,21 @@
-import { HardDrive, FolderGit2 } from "lucide-react";
-import { QuickSearch } from "@/components/QuickSearch";
+import { HardDrive, FolderGit2, Search } from "lucide-react";
 import { useUI } from "@/lib/store";
 
 export function TopBar() {
   const storeId = useUI((s) => s.storeId);
+  const setPaletteOpen = useUI((s) => s.setPaletteOpen);
   const isVault = storeId === "vault";
 
   return (
     <header className="flex items-center gap-4 border-b border-ink-600 bg-ink-800/60 px-6 py-3 backdrop-blur">
-      <QuickSearch />
+      <button
+        onClick={() => setPaletteOpen(true)}
+        className="flex w-full max-w-md items-center gap-2 rounded-lg border border-ink-500 bg-ink-800 px-3 py-2 text-sm text-parchment-300/50 transition hover:border-arcane/50 hover:text-parchment-300/70"
+      >
+        <Search className="h-4 w-4" />
+        <span className="flex-1 text-left">Search your world…</span>
+        <kbd className="kbd">⌘K</kbd>
+      </button>
       <div className="ml-auto flex items-center gap-2">
         <span
           className="chip gap-1.5"
