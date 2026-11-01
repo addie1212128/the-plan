@@ -10,6 +10,9 @@ interface UIState {
   /** Id of the adapter the user has chosen as their store ("local" | "vault"). */
   storeId: string;
   setStoreId: (id: string) => void;
+  /** Command palette (⌘K) visibility — not persisted. */
+  paletteOpen: boolean;
+  setPaletteOpen: (open: boolean) => void;
 }
 
 export const useUI = create<UIState>()(
@@ -21,7 +24,16 @@ export const useUI = create<UIState>()(
       setWorldMode: (worldMode) => set({ worldMode }),
       storeId: "local",
       setStoreId: (storeId) => set({ storeId }),
+      paletteOpen: false,
+      setPaletteOpen: (paletteOpen) => set({ paletteOpen }),
     }),
-    { name: "loremkeeper:ui" },
+    {
+      name: "loremkeeper:ui",
+      partialize: (s) => ({
+        sidebarCollapsed: s.sidebarCollapsed,
+        worldMode: s.worldMode,
+        storeId: s.storeId,
+      }),
+    },
   ),
 );

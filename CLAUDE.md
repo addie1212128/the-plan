@@ -40,6 +40,10 @@ interactive 3D world + Obsidian vault sync). See `README.md` for the full tour.
   `verdant`). Reuse these rather than ad-hoc colors. Dark theme only for now.
 - 3D lives in `src/world/`. Keep it in react-three-fiber declarative style;
   the scene is keyed by `mode` so switching modes remounts/reset the camera.
+- Global **command palette** (`src/components/CommandPalette.tsx`, mounted in
+  `AppShell`) opens on ⌘K/Ctrl-K or via the top-bar button
+  (`useUI.paletteOpen`); it searches entries/categories/pages and offers "New …"
+  actions. It replaced the old inline `QuickSearch`.
 - Don't put a model/marketing model name in commits, code, or PRs.
 
 ## Commands
